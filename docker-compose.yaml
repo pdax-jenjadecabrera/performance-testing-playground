@@ -1,0 +1,31 @@
+services:
+  pt_playground_httpbin:
+    image: kennethreitz/httpbin
+    container_name: pt_playground_httpbin
+    expose:
+      - 80
+    ports:
+      - 8000:80
+    networks:
+      - network
+
+  pt_playground_influxdb:
+    image: influxdb:2.7.11-alpine
+    container_name: pt_playground_influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=123456789
+      - DOCKER_INFLUXDB_INIT_ORG=k6io
+      - DOCKER_INFLUXDB_INIT_BUCKET=k6
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=EEKpryGZk8pVDXmIuy484BKUxM5jOEDv7YNoeNZUbsNbpbPbP6kK_qY9Zsyw7zNnlZ7pHG16FYzNaqwLMBUz8g==
+    expose:
+      - 8086
+    ports:
+      - "8001:8086"
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
