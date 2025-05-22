@@ -1,11 +1,17 @@
 services:
-  pt_playground_httpbin:
-    image: kennethreitz/httpbin
-    container_name: pt_playground_httpbin
+  pt_playground_grafana:
+    image: grafana/grafana:11.6.1-security-01-ubuntu
+    container_name: pt_playground_grafana
+    environment:
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_BASIC_ENABLED=false
+    volumes:
+      - ./infrastructures/grafana:/etc/grafana/provisioning/
     expose:
-      - 80
+      - 3000
     ports:
-      - 8000:80
+      - 8000:3000
     networks:
       - network
 
@@ -23,6 +29,16 @@ services:
       - 8086
     ports:
       - "8001:8086"
+    networks:
+      - network
+
+  pt_playground_httpbin:
+    image: kennethreitz/httpbin
+    container_name: pt_playground_httpbin
+    expose:
+      - 80
+    ports:
+      - 8002:80
     networks:
       - network
 
